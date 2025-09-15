@@ -14,11 +14,10 @@ class SpriteBase(pygame.sprite.Sprite):
 # Classe Pacman com spritesheet
 class Pacman(SpriteBase):
     def __init__(self, x=0, y=0, animacao_velocidade=3, velocidade=3):
-        self.direcao = None
         self.movendo = False
         self.velocidade = velocidade
-        self.dx = 0
-        self.dy = 0
+        self.x, self.y = x, y
+        self.dx, self.dy = 0, 0
 
         # animação
         self.frame_atual = 0
@@ -57,7 +56,10 @@ class Pacman(SpriteBase):
     def update(self):
         #movimento
         self.rect.x += self.dx
+        self.x += self.dx
+        
         self.rect.y += self.dy
+        self.y += self.dy
 
         #animacao
         if self.movendo:
@@ -111,27 +113,51 @@ class Labirinto:
     def __init__(self):
         spritesheet = pygame.image.load(constantes.SPRITESHEET_PATH).convert_alpha()
         x0, y0, largura, altura = constantes.LABIRINTO_SEM_BOLINHAS
-        self.fundo = spritesheet.subsurface((x0, y0, largura, altura))
-        self.fundo = pygame.transform.scale(self.fundo, (largura * 2, altura * 2))
+        self.imagem = spritesheet.subsurface((x0, y0, largura, altura))
+        self.imagem = pygame.transform.scale(self.imagem, (largura * 2, altura * 2))
 
+        self.horizontais = {
+            #linha: [(faixa que ele pode andar), (outra faixa)]          
+            70: [(10, 184), (232, 409)],
+            133: [(10, 409)],
+        }
 
-        self.paredes = [
-            [],
-            [],
-            [],
-
-        ]
+        self.verticais = {
+            #coluna: [(faixa que ele pode andar), (outra faixa)]          
+            10: [(70, 181)],
+            88: [(70, 470)],
+            184: [(70, 133)],
+            232: [(70, 133)],
+            328: [(70, 470)],
+            409: [(70, 181)],
+        }
 
         self.bolinhas = []
-        for linha in range(1, 4):
-            self.bolinhas.append((linha, 1))
+        #for linha in range(1, 4):
+        #    self.bolinhas.append((linha, 1))
+
+
+    def pode_andar_horizontal(self, px, py):
+        if py in self.horizontais:
+            for inicio, fim in self.horizontais[py]:
+                if inicio <= px <= fim:
+                    return inicio, fim  # intervalo do corredor horiz
+        return None
+
+    def pode_andar_vertical(self, px, py):
+        if px in self.verticais:
+            for inicio, fim in self.verticais[px]:
+                if inicio <= py <= fim:
+                    return inicio, fim  #intervalo do corredor. vertical
+        return None
+
 
     def comer_bolinha(self, linha, coluna):
         if (linha, coluna) in self.bolinhas:
             self.bolinhas.remove((linha, coluna))
 
     def desenhar(self, surface):
-        surface.blit(self.fundo, (20, 80))
+        surface.blit(self.imagem, (0, 60))
 
         for linha, coluna in self.bolinhas:
             x = coluna * constantes.TILE_SIZE + constantes.TILE_SIZE // 2

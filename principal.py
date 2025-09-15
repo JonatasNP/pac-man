@@ -16,12 +16,15 @@ class Game:
         self.fonte = pygame.font.match_font(constantes.FONTE)
         self.carregar_arquivos()
 
+        self.direcao_atual = None
+        self.direcao_desejada = None
+
 
     def novo_jogo(self):
         self.labirinto = Labirinto()
         self.pacman = Pacman(
             x=10,
-            y=10,
+            y=70,
             animacao_velocidade=3,
             velocidade=3
         )
@@ -50,14 +53,87 @@ class Game:
                 self.esta_rodando = False
             
             if event.type == pygame.KEYDOWN:
+                print(self.pacman.x, self.pacman.y)
                 if event.key == pygame.K_UP:
-                    self.pacman.cima()
+                    self.direcao_desejada = "UP"
                 elif event.key == pygame.K_DOWN:
-                    self.pacman.baixo()
+                    self.direcao_desejada = "DOWN"
                 elif event.key == pygame.K_LEFT:
-                    self.pacman.esquerda()
+                    self.direcao_desejada = "LEFT"
                 elif event.key == pygame.K_RIGHT:
-                    self.pacman.direita()
+                    self.direcao_desejada = "RIGHT"
+        
+        if self.direcao_desejada:
+            self.mover_pacman()
+
+    
+    def mover_pacman(self):
+        px = self.pacman.x
+        py = self.pacman.y
+        velocidade = self.pacman.velocidade
+
+        #tentar mudar para a direção desejada
+        if self.direcao_desejada:
+            if self.direcao_desejada in ("LEFT", "RIGHT"):
+                intervalo = self.labirinto.pode_andar_horizontal(px, py)
+                if intervalo:
+                    inicio, fim = intervalo
+                    novo_x = self.pacman.rect.x - velocidade if self.direcao_desejada == "LEFT" else self.pacman.rect.x + velocidade
+                    if inicio <= novo_x <= fim:
+                        self.direcao_atual = self.direcao_desejada  # muda a direção atual
+            elif self.direcao_desejada in ("UP", "DOWN"):
+                intervalo = self.labirinto.pode_andar_vertical(px, py)
+                if intervalo:
+                    inicio, fim = intervalo
+                    novo_y = self.pacman.rect.y - velocidade if self.direcao_desejada == "UP" else self.pacman.rect.y + velocidade
+                    if inicio <= novo_y <= fim:
+                        self.direcao_atual = self.direcao_desejada
+
+        #aplicar o movimento na direção atual
+        if self.direcao_atual in ("LEFT", "RIGHT"):
+            intervalo = self.labirinto.pode_andar_horizontal(px, py)
+            if intervalo:
+                inicio, fim = intervalo
+                novo_x = self.pacman.rect.x - velocidade if self.direcao_atual == "LEFT" else self.pacman.rect.x + velocidade
+                if novo_x < inicio:
+                    self.pacman.rect.x = inicio
+                    self.pacman.parar()
+                    self.direcao_atual = None
+                elif novo_x > fim:
+                    self.pacman.rect.x = fim
+                    self.pacman.parar()
+                    self.direcao_atual = None
+                else:
+                    if self.direcao_atual == "LEFT":
+                        self.pacman.esquerda()
+                    else:
+                        self.pacman.direita()
+            else:
+                self.pacman.parar()
+                self.direcao_atual = None
+
+        elif self.direcao_atual in ("UP", "DOWN"):
+            intervalo = self.labirinto.pode_andar_vertical(px, py)
+            if intervalo:
+                inicio, fim = intervalo
+                novo_y = self.pacman.rect.y - velocidade if self.direcao_atual == "UP" else self.pacman.rect.y + velocidade
+                if novo_y < inicio:
+                    self.pacman.rect.y = inicio
+                    self.pacman.parar()
+                    self.direcao_atual = None
+                elif novo_y > fim:
+                    self.pacman.rect.y = fim
+                    self.pacman.parar()
+                    self.direcao_atual = None
+                else:
+                    if self.direcao_atual == "UP":
+                        self.pacman.cima()
+                    else:
+                        self.pacman.baixo()
+            else:
+                self.pacman.parar()
+                self.direcao_atual = None
+
             
 
     def atualizar_sprites(self):
@@ -111,7 +187,7 @@ class Game:
             320
         )
         self.mostrar_texto(
-            'Desenvolvido por Jônatas Nicolau',
+            'Desenvolvido por jonatas.cunha',
             14,
             constantes.BRANCO,
             constantes.LARGURA / 2,
