@@ -4,6 +4,7 @@ import sprites
 import os
 from sprites import Pacman, Labirinto
 
+
 class Game:
     def __init__(self):
         # Criando a tela do jogo
@@ -72,7 +73,7 @@ class Game:
         py = self.pacman.y
         velocidade = self.pacman.velocidade
 
-        #tentar mudar para a direção desejada
+        #tentar mudar para a direcao desejada
         if self.direcao_desejada:
             if self.direcao_desejada in ("LEFT", "RIGHT"):
                 intervalo = self.labirinto.pode_andar_horizontal(px, py)
@@ -80,7 +81,7 @@ class Game:
                     inicio, fim = intervalo
                     novo_x = self.pacman.rect.x - velocidade if self.direcao_desejada == "LEFT" else self.pacman.rect.x + velocidade
                     if inicio <= novo_x <= fim:
-                        self.direcao_atual = self.direcao_desejada  # muda a direção atual
+                        self.direcao_atual = self.direcao_desejada 
             elif self.direcao_desejada in ("UP", "DOWN"):
                 intervalo = self.labirinto.pode_andar_vertical(px, py)
                 if intervalo:
@@ -89,7 +90,7 @@ class Game:
                     if inicio <= novo_y <= fim:
                         self.direcao_atual = self.direcao_desejada
 
-        #aplicar o movimento na direção atual
+        #aplicar o movimento na direcao atual
         if self.direcao_atual in ("LEFT", "RIGHT"):
             intervalo = self.labirinto.pode_andar_horizontal(px, py)
             if intervalo:
@@ -133,11 +134,12 @@ class Game:
             else:
                 self.pacman.parar()
                 self.direcao_atual = None
-
             
 
     def atualizar_sprites(self):
         self.todas_as_sprites.update()
+
+
 
         linha = self.pacman.rect.centery // constantes.TILE_SIZE
         coluna = self.pacman.rect.centerx // constantes.TILE_SIZE

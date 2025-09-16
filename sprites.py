@@ -3,7 +3,7 @@ import constantes
 import os
 
 
-# Classe base para sprites
+# Classe base sprites
 class SpriteBase(pygame.sprite.Sprite):
     def __init__(self, imagem_inicial):
         super().__init__()
@@ -11,7 +11,6 @@ class SpriteBase(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
-# Classe Pacman com spritesheet
 class Pacman(SpriteBase):
     def __init__(self, x=0, y=0, animacao_velocidade=3, velocidade=3):
         self.movendo = False
@@ -120,14 +119,19 @@ class Labirinto:
             #linha: [(faixa que ele pode andar), (outra faixa)]          
             70: [(10, 184), (232, 409)],
             133: [(10, 409)],
+            181: [(10, 88), (136, 184), (232, 280), (328, 409)],
+            229: [(136, 280)],
+            280: [(-29, 136), (280, 444)],
         }
 
         self.verticais = {
             #coluna: [(faixa que ele pode andar), (outra faixa)]          
             10: [(70, 181)],
             88: [(70, 470)],
-            184: [(70, 133)],
-            232: [(70, 133)],
+            136: [(133, 181), (229, 373)],
+            184: [(70, 133), (181, 229)],
+            232: [(70, 133), (181, 229)],
+            280: [(133, 181), (229, 373)],
             328: [(70, 470)],
             409: [(70, 181)],
         }
@@ -148,7 +152,7 @@ class Labirinto:
         if px in self.verticais:
             for inicio, fim in self.verticais[px]:
                 if inicio <= py <= fim:
-                    return inicio, fim  #intervalo do corredor. vertical
+                    return inicio, fim  #intervalo do corredor vertical
         return None
 
 
