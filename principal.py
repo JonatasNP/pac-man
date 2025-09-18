@@ -2,7 +2,7 @@ import pygame
 import constantes
 import sprites
 import os
-from sprites import Pacman, Labirinto
+from sprites import Labirinto, Pacman, Fantasma
 
 
 class Game:
@@ -31,6 +31,19 @@ class Game:
         )
         self.todas_as_sprites = pygame.sprite.Group()
         self.todas_as_sprites.add(self.pacman)
+        for pos_ini, cor_fantasma in [
+            ((10,100), "vermelho")
+        ]:
+            fantasma = Fantasma(
+                cor=cor_fantasma,
+                x=pos_ini[0],
+                y=pos_ini[1],
+                animacao_velocidade=2,
+                velocidade=3,
+                labirinto=self.labirinto,
+                pacman=self.pacman
+            )
+            self.todas_as_sprites.add(fantasma)
         pygame.mixer.Sound(os.path.join("audios", constantes.MUSICA_INICIO)).play()
         self.rodar()
     
@@ -138,12 +151,6 @@ class Game:
 
     def atualizar_sprites(self):
         self.todas_as_sprites.update()
-
-
-
-        linha = self.pacman.rect.centery // constantes.TILE_SIZE
-        coluna = self.pacman.rect.centerx // constantes.TILE_SIZE
-        self.labirinto.comer_bolinha(linha, coluna)
 
 
     def desenhar_sprites(self):

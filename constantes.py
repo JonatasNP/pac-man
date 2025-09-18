@@ -47,3 +47,13 @@ PACMAN_FRAMES = {
 TILE_SIZE = 28
 LABIRINTO_COM_BOLINHAS = (0, 0, 224, 248)
 LABIRINTO_SEM_BOLINHAS = (228, 0, 224, 248)
+
+
+FANTASMA_FRAMES = {
+    "vermelho": {
+        "direita": [(455 + i*16, 64, 16, 16) for i in range(2)],
+        "esquerda": [(487 + i*16, 64, 16, 16) for i in range(2)],
+        "cima": [(519 + i*16, 64, 16, 16) for i in range(2)],
+        "baixo": [(551 + i*16, 64, 16, 16) for i in range(2)]
+    }
+}
