@@ -218,39 +218,26 @@ class Fantasma(SpriteBase):
     def update(self):
         pacman = self.pacman
         labirinto = self.labirinto
-        px, py = self.rect.x, self.rect.y
 
-        if pacman:
-            # usa IA para perseguir
-            self.perseguir_inteligente(pacman, labirinto)
+        if False:
+            self.movimentacao_inteligente(pacman, labirinto)
         else:
-            # se não tiver pacman definido, movimento aleatório
-            direcoes_possiveis = []
-
-            intervalo_h = labirinto.pode_andar_horizontal(px, py)
-            if intervalo_h:
-                inicio, fim = intervalo_h
-            if px > inicio:
-                direcoes_possiveis.append("LEFT")
-            if px < fim:
-                direcoes_possiveis.append("RIGHT")
-
-            intervalo_v = labirinto.pode_andar_vertical(px, py)
-            if intervalo_v:
-                inicio, fim = intervalo_v
-                if py > inicio:
-                    direcoes_possiveis.append("UP")
-                if py < fim:
-                    direcoes_possiveis.append("DOWN")
-
-            if direcoes_possiveis:
-                escolha = random.choice(direcoes_possiveis)
-                self.mudar_direcao(escolha)
+            self.movimentacao_aleatoria(labirinto)
 
         self.rect.x += self.dx
         self.rect.y += self.dy
         self.x += self.dx
         self.y += self.dy
+
+        #mudar frames da animacao
+        if self.movendo:
+            self.contador_frame += 1
+            if self.contador_frame >= self.animacao_velocidade:
+                self.contador_frame = 0
+                self.frame_atual = (self.frame_atual + 1) % len(self.frames)
+                self.image = self.frames[self.frame_atual]
+        
+        print("Fantasma:", self.x, self.y)
 
     
     def mudar_direcao(self, direcao):
@@ -264,7 +251,34 @@ class Fantasma(SpriteBase):
             self.direita()
 
 
-    def perseguir_inteligente(self, pacman, labirinto):
+    def movimentacao_aleatoria(self, labirinto):
+        direcoes_possiveis = []
+        px, py = self.rect.x, self.rect.y
+
+        intervalo_h = labirinto.pode_andar_horizontal(px, py)
+        if intervalo_h:
+            inicio, fim = intervalo_h
+            
+            if inicio < px == fim:
+                direcoes_possiveis.append("LEFT")
+            if inicio == px < fim:
+                direcoes_possiveis.append("RIGHT")
+
+        intervalo_v = labirinto.pode_andar_vertical(px, py)
+        if intervalo_v:
+            inicio, fim = intervalo_v
+
+            if inicio < py == fim: # inicio e fim tao trocados pq inicio é a posicao mais em cima na tela
+                direcoes_possiveis.append("UP")
+            if inicio == py < fim:
+                direcoes_possiveis.append("DOWN")
+
+        if direcoes_possiveis:
+            escolha = random.choice(direcoes_possiveis)
+            self.mudar_direcao(escolha)
+        
+
+    def movimentacao_inteligente(self, pacman, labirinto):
         dx = pacman.rect.x - self.rect.x
         dy = pacman.rect.y - self.rect.y
         
@@ -273,14 +287,18 @@ class Fantasma(SpriteBase):
                 self.direita()
             elif dx < 0 and labirinto.pode_andar_horizontal(self.rect.x, self.rect.y):
                 self.esquerda()
-        else:
+        elif abs(dx) < abs(dy):
             if dy > 0 and labirinto.pode_andar_vertical(self.rect.x, self.rect.y):
                 self.baixo()
             elif dy < 0 and labirinto.pode_andar_vertical(self.rect.x, self.rect.y):
                 self.cima()
+        else:
+            self.parar()
+
 
     
     def cima(self):
+        self.direcao = "UP"
         self.frames = self.frames_cima
         self.dx, self.dy = 0, -self.velocidade
         self.movendo = True
@@ -299,3 +317,7 @@ class Fantasma(SpriteBase):
         self.frames = self.frames_direita
         self.dx, self.dy = self.velocidade, 0
         self.movendo = True
+
+    def parar(self):
+        self.dx, self.dy = 0, 0
+        self.movendo = False

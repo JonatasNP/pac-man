@@ -32,7 +32,7 @@ class Game:
         self.todas_as_sprites = pygame.sprite.Group()
         self.todas_as_sprites.add(self.pacman)
         for pos_ini, cor_fantasma in [
-            ((10,100), "vermelho")
+            ((409,517), "vermelho")
         ]:
             fantasma = Fantasma(
                 cor=cor_fantasma,
@@ -67,7 +67,6 @@ class Game:
                 self.esta_rodando = False
             
             if event.type == pygame.KEYDOWN:
-                print(self.pacman.x, self.pacman.y)
                 if event.key == pygame.K_UP:
                     self.direcao_desejada = "UP"
                 elif event.key == pygame.K_DOWN:
