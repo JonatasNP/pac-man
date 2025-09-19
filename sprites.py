@@ -150,25 +150,21 @@ class Pacman(SpriteBase):
         self.frames = self.frames_cima
         self.dx, self.dy = 0, -self.velocidade
         self.movendo = True
-
     
     def baixo(self):
         self.frames = self.frames_baixo
         self.dx, self.dy = 0, self.velocidade
         self.movendo = True
 
-
     def esquerda(self):
         self.frames = self.frames_esquerda
         self.dx, self.dy = -self.velocidade, 0
-        self.movendo = True
-    
+        self.movendo = True    
 
     def direita(self):
         self.frames = self.frames_direita
         self.dx, self.dy = self.velocidade, 0
         self.movendo = True
-
 
     def parar(self):
         self.frames = self.frame_parado
@@ -214,6 +210,7 @@ class Fantasma(SpriteBase):
         self.frames = self.frames_cima
         self.image = self.frames[0]
         self.rect.topleft = (x, y)
+
 
     def update(self):
         pacman = self.pacman
@@ -278,7 +275,7 @@ class Fantasma(SpriteBase):
             self.mudar_direcao(escolha)
         
 
-    def movimentacao_inteligente(self, pacman, labirinto):
+    def movimentacao_inteligente(self, pacman, labirinto): # NÃO TÁ FUNCIONANDO AINDA!!!!!!!
         dx = pacman.rect.x - self.rect.x
         dy = pacman.rect.y - self.rect.y
         
@@ -296,9 +293,7 @@ class Fantasma(SpriteBase):
             self.parar()
 
 
-    
     def cima(self):
-        self.direcao = "UP"
         self.frames = self.frames_cima
         self.dx, self.dy = 0, -self.velocidade
         self.movendo = True
