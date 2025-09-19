@@ -176,6 +176,7 @@ class Fantasma(SpriteBase):
     def __init__(self, cor="vermelho", x=0, y=0, animacao_velocidade=2, velocidade=3, labirinto=None, pacman=None):
         super().__init__(pygame.Surface((constantes.TILE_SIZE, constantes.TILE_SIZE)))  
         self.movendo = False
+        self.ultimos_movs = []
         self.cor = cor
         self.velocidade = velocidade
         self.x, self.y = x, y
@@ -233,19 +234,6 @@ class Fantasma(SpriteBase):
                 self.contador_frame = 0
                 self.frame_atual = (self.frame_atual + 1) % len(self.frames)
                 self.image = self.frames[self.frame_atual]
-        
-        print("Fantasma:", self.x, self.y)
-
-    
-    def mudar_direcao(self, direcao):
-        if direcao == "UP":
-            self.cima()
-        elif direcao == "DOWN":
-            self.baixo()
-        elif direcao == "LEFT":
-            self.esquerda()
-        elif direcao == "RIGHT":
-            self.direita()
 
 
     def movimentacao_aleatoria(self, labirinto):
@@ -265,13 +253,20 @@ class Fantasma(SpriteBase):
         if intervalo_v:
             inicio, fim = intervalo_v
 
-            if inicio < py == fim: # inicio e fim tao trocados pq inicio é a posicao mais em cima na tela
+            # inicio e fim tao trocados pq inicio é a posicao mais em cima na tela
+            if inicio < py == fim:
                 direcoes_possiveis.append("UP")
             if inicio == py < fim:
                 direcoes_possiveis.append("DOWN")
 
         if direcoes_possiveis:
             escolha = random.choice(direcoes_possiveis)
+            
+            opostas = {"UP": "DOWN", "DOWN": "UP", "LEFT": "RIGHT", "RIGHT": "LEFT"}
+
+            if len(self.ultimos_movs) >= 2 and self.ultimos_movs[-1] != opostas[escolha]:
+                escolha = random.choice(direcoes_possiveis)
+
             self.mudar_direcao(escolha)
         
 
@@ -291,6 +286,29 @@ class Fantasma(SpriteBase):
                 self.cima()
         else:
             self.parar()
+
+    
+    def mudar_direcao(self, direcao):
+        if direcao == "UP":
+            if len(self.ultimos_movs) > 2: self.ultimos_movs.pop(0)
+            self.ultimos_movs.append("UP")    
+            self.cima()
+        elif direcao == "DOWN":
+            if len(self.ultimos_movs) > 2: self.ultimos_movs.pop(0)
+            self.ultimos_movs.append("DOWN")
+            self.baixo()
+        elif direcao == "LEFT":
+            if len(self.ultimos_movs) > 2: self.ultimos_movs.pop(0)
+            self.ultimos_movs.append("LEFT")
+            self.esquerda()
+        elif direcao == "RIGHT":
+            if len(self.ultimos_movs) > 2: self.ultimos_movs.pop(0)
+            self.ultimos_movs.append("RIGHT")
+            self.direita()
+        
+        print("Fantasma:", self.x, self.y)
+        print("Ultimos movimentos:", self.ultimos_movs)
+
 
 
     def cima(self):
