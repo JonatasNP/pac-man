@@ -20,6 +20,9 @@ class Game:
         self.direcao_atual = None
         self.direcao_desejada = None
 
+        self.pontuacao = 0 # fazer depois
+        self.fichas = 1
+
 
     def novo_jogo(self):
         self.labirinto = Labirinto()
@@ -32,7 +35,10 @@ class Game:
         self.todas_as_sprites = pygame.sprite.Group()
         self.todas_as_sprites.add(self.pacman)
         for pos_ini, cor_fantasma in [
-            ((409,517), "vermelho")
+            ((409,517), "vermelho"),
+            ((409,517), "rosa"),
+            ((409,517), "azul"),
+            ((409,517), "amarelo"),
         ]:
             fantasma = Fantasma(
                 cor=cor_fantasma,
@@ -151,11 +157,30 @@ class Game:
     def atualizar_sprites(self):
         self.todas_as_sprites.update()
 
+        for sprite in self.todas_as_sprites:
+            if isinstance(sprite, Fantasma):
+                if pygame.sprite.collide_rect(self.pacman, sprite):
+                    self.perder_ficha()
+
 
     def desenhar_sprites(self):
         self.tela.fill(constantes.PRETO)
         self.labirinto.desenhar(self.tela)
         self.todas_as_sprites.draw(self.tela)
+        self.mostrar_texto(
+            f"Pontuação: {self.pontuacao}", 
+            18, 
+            constantes.AMARELO, 
+            constantes.LARGURA // 2,# posição x
+            20 # posição y
+        )
+        self.mostrar_texto(
+            f"fichas restantes: {self.fichas}", 
+            18, 
+            constantes.BRANCO, 
+            constantes.LARGURA // 2,# posição x
+            560 # posição y
+        )
         pygame.display.flip()
 
 
@@ -185,20 +210,20 @@ class Game:
         pygame.mixer.music.load(os.path.join("audios", constantes.MUSICA_START))
         pygame.mixer.music.play()
 
-        self.mostrar_start_logo(constantes.LARGURA / 2, 20)
+        self.mostrar_start_logo(constantes.LARGURA // 2, 20)
 
         self.mostrar_texto(
             'Pressione uma tecla para jogar',
             22,
             constantes.AMARELO,
-            constantes.LARGURA / 2,
+            constantes.LARGURA // 2,
             320
         )
         self.mostrar_texto(
             'Desenvolvido por jonatas.cunha',
             14,
             constantes.BRANCO,
-            constantes.LARGURA / 2,
+            constantes.LARGURA // 2,
             570
         )
 
@@ -218,6 +243,19 @@ class Game:
                     esperando = False
                     pygame.mixer.music.stop()
                     pygame.mixer.Sound(os.path.join(self.diretorio_audios, constantes.TECLA_START)).play()
+
+
+    def perder_ficha(self):
+        self.fichas -= 1
+        if self.fichas >= 0:
+            #reposicionar
+            self.pacman.rect.topleft = (10, 70)
+            self.pacman.x, self.pacman.y = 10, 70
+            self.pacman.parar()
+            
+            pygame.time.delay(0)
+        else:
+            self.jogando = False
 
 
     def mostrar_tela_game_over(self):

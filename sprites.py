@@ -56,7 +56,7 @@ class Labirinto:
         if py in self.horizontais:
             for inicio, fim in self.horizontais[py]:
                 if inicio <= px <= fim:
-                    return inicio, fim  # intervalo do corredor horiz
+                    return inicio, fim   # intervalo do corredor horiz
         return None
 
     def pode_andar_vertical(self, px, py):
@@ -173,7 +173,7 @@ class Pacman(SpriteBase):
 
 
 class Fantasma(SpriteBase):
-    def __init__(self, cor="vermelho", x=0, y=0, animacao_velocidade=2, velocidade=3, labirinto=None, pacman=None):
+    def __init__(self, cor, x=0, y=0, animacao_velocidade=2, velocidade=3, labirinto=None, pacman=None):
         super().__init__(pygame.Surface((constantes.TILE_SIZE, constantes.TILE_SIZE)))  
         self.movendo = False
         self.ultimos_movs = []
@@ -261,11 +261,6 @@ class Fantasma(SpriteBase):
 
         if direcoes_possiveis:
             escolha = random.choice(direcoes_possiveis)
-            
-            opostas = {"UP": "DOWN", "DOWN": "UP", "LEFT": "RIGHT", "RIGHT": "LEFT"}
-
-            if len(self.ultimos_movs) >= 2 and self.ultimos_movs[-1] != opostas[escolha]:
-                escolha = random.choice(direcoes_possiveis)
 
             self.mudar_direcao(escolha)
         
@@ -290,19 +285,19 @@ class Fantasma(SpriteBase):
     
     def mudar_direcao(self, direcao):
         if direcao == "UP":
-            if len(self.ultimos_movs) > 2: self.ultimos_movs.pop(0)
+            if len(self.ultimos_movs) == 3: self.ultimos_movs.pop(0)
             self.ultimos_movs.append("UP")    
             self.cima()
         elif direcao == "DOWN":
-            if len(self.ultimos_movs) > 2: self.ultimos_movs.pop(0)
+            if len(self.ultimos_movs) == 3: self.ultimos_movs.pop(0)
             self.ultimos_movs.append("DOWN")
             self.baixo()
         elif direcao == "LEFT":
-            if len(self.ultimos_movs) > 2: self.ultimos_movs.pop(0)
+            if len(self.ultimos_movs) == 3: self.ultimos_movs.pop(0)
             self.ultimos_movs.append("LEFT")
             self.esquerda()
         elif direcao == "RIGHT":
-            if len(self.ultimos_movs) > 2: self.ultimos_movs.pop(0)
+            if len(self.ultimos_movs) == 3: self.ultimos_movs.pop(0)
             self.ultimos_movs.append("RIGHT")
             self.direita()
         

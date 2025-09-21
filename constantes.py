@@ -55,5 +55,23 @@ FANTASMA_FRAMES = {
         "esquerda": [(487 + i*16, 64, 16, 16) for i in range(2)],
         "cima": [(519 + i*16, 64, 16, 16) for i in range(2)],
         "baixo": [(551 + i*16, 64, 16, 16) for i in range(2)]
+    },
+    "rosa": {
+        "direita": [(455 + i*16, 80, 16, 16) for i in range(2)],
+        "esquerda": [(487 + i*16, 80, 16, 16) for i in range(2)],
+        "cima": [(519 + i*16, 80, 16, 16) for i in range(2)],
+        "baixo": [(551 + i*16, 80, 16, 16) for i in range(2)]
+    },
+    "azul": {
+        "direita": [(455 + i*16, 96, 16, 16) for i in range(2)],
+        "esquerda": [(487 + i*16, 96, 16, 16) for i in range(2)],
+        "cima": [(519 + i*16, 96, 16, 16) for i in range(2)],
+        "baixo": [(551 + i*16, 96, 16, 16) for i in range(2)]
+    },
+    "amarelo": {
+        "direita": [(455 + i*16, 112, 16, 16) for i in range(2)],
+        "esquerda": [(487 + i*16, 112, 16, 16) for i in range(2)],
+        "cima": [(519 + i*16, 112, 16, 16) for i in range(2)],
+        "baixo": [(551 + i*16, 112, 16, 16) for i in range(2)]
     }
 }
