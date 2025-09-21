@@ -19,6 +19,7 @@ FPS = 30
 PRETO = (0, 0, 0)
 BRANCO = (255, 255, 255)
 AMARELO = (244, 233, 51)
+VERMELHO = (255, 0, 0)
 
 # IMAGENS
 SPRITSHEET = "spritesheet.png"
@@ -31,6 +32,7 @@ FONTE = "Courier"
 MUSICA_START = "intermission.wav"
 TECLA_START = "munch_1.wav"
 MUSICA_INICIO = "start.wav"
+MUSICA_GAME_OVER = "death_0.wav"
 
 #PATHS
 SPRITESHEET_PATH='imagens/spritesheet.png'

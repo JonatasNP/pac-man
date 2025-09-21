@@ -21,7 +21,7 @@ class Game:
         self.direcao_desejada = None
 
         self.pontuacao = 0 # fazer depois
-        self.fichas = 1
+        self.fichas = 0
 
 
     def novo_jogo(self):
@@ -168,7 +168,7 @@ class Game:
         self.labirinto.desenhar(self.tela)
         self.todas_as_sprites.draw(self.tela)
         self.mostrar_texto(
-            f"Pontuação: {self.pontuacao}", 
+            f"PONTUAÇÃO ATUAL: {self.pontuacao}", 
             18, 
             constantes.AMARELO, 
             constantes.LARGURA // 2,# posição x
@@ -259,14 +259,60 @@ class Game:
 
 
     def mostrar_tela_game_over(self):
-        pass
+        self.tela.fill(constantes.PRETO)
+        pygame.mixer.music.load(os.path.join("audios", constantes.MUSICA_GAME_OVER))
+        pygame.mixer.music.play()
+
+        self.mostrar_texto(
+            'VOCÊ PERDEU TODAS AS FICHAS...',
+            22,
+            constantes.VERMELHO,
+            constantes.LARGURA // 2,
+            260,
+        )
+        self.mostrar_texto(
+            f"PONTUAÇÃO FINAL: {self.pontuacao}",
+            18,
+            constantes.AMARELO,
+            constantes.LARGURA // 2,
+            300
+        )
+        self.mostrar_texto(
+            'Se deseja iniciar um novo jogo, aperte a tecla N.',
+            14,
+            constantes.BRANCO,
+            constantes.LARGURA // 2,
+            570
+        )
+
+        pygame.display.flip()
+
+        esperando = True
+        while esperando:
+            self.relogio.tick(constantes.FPS)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    esperando = False
+                    self.esta_rodando = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_n:
+                        esperando = False
+                        self.jogando = False
+                        break
+
 
 
 g = Game()
 g.mostrar_tela_start()
 
-
-while g.esta_rodando:
+while True:
     g.novo_jogo()
+
+    if not g.esta_rodando: break
+
     g.mostrar_tela_game_over()
+
+    if not g.esta_rodando: break
+    
+    g = Game()
 
