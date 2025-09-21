@@ -176,7 +176,7 @@ class Fantasma(SpriteBase):
     def __init__(self, cor, x=0, y=0, animacao_velocidade=2, velocidade=3, labirinto=None, pacman=None):
         super().__init__(pygame.Surface((constantes.TILE_SIZE, constantes.TILE_SIZE)))  
         self.movendo = False
-        self.ultimos_movs = []
+        self.ultimos_movs = [None]
         self.cor = cor
         self.velocidade = velocidade
         self.x, self.y = x, y
@@ -241,25 +241,29 @@ class Fantasma(SpriteBase):
         px, py = self.rect.x, self.rect.y
 
         intervalo_h = labirinto.pode_andar_horizontal(px, py)
+        intervalo_v = labirinto.pode_andar_vertical(px, py)
+
         if intervalo_h:
-            inicio, fim = intervalo_h
-            
-            if inicio < px == fim:
+            inicio_x, fim_x = intervalo_h
+            if inicio_x < px == fim_x or (intervalo_v and (py in intervalo_v) and inicio_x < px <= fim_x):
                 direcoes_possiveis.append("LEFT")
-            if inicio == px < fim:
+            if inicio_x == px < fim_x or (intervalo_v and (py in intervalo_v) and inicio_x <= px < fim_x):
                 direcoes_possiveis.append("RIGHT")
 
-        intervalo_v = labirinto.pode_andar_vertical(px, py)
         if intervalo_v:
-            inicio, fim = intervalo_v
-
             # inicio e fim tao trocados pq inicio é a posicao mais em cima na tela
-            if inicio < py == fim:
+            inicio_y, fim_y = intervalo_v
+            if inicio_y < py == fim_y or (intervalo_h and (px in intervalo_h) and inicio_y < py <= fim_y):
                 direcoes_possiveis.append("UP")
-            if inicio == py < fim:
+            if inicio_y == py < fim_y or (intervalo_h and (px in intervalo_h) and inicio_y <= py < fim_y):
                 direcoes_possiveis.append("DOWN")
 
         if direcoes_possiveis:
+            opostas = {"LEFT":"RIGHT","RIGHT":"LEFT","UP":"DOWN","DOWN":"UP"}
+
+            if len(self.ultimos_movs) > 1 and len(direcoes_possiveis) > 1:
+                direcoes_possiveis.remove(opostas[self.ultimos_movs[-1]])
+            
             escolha = random.choice(direcoes_possiveis)
 
             self.mudar_direcao(escolha)
@@ -284,6 +288,7 @@ class Fantasma(SpriteBase):
 
     
     def mudar_direcao(self, direcao):
+
         if direcao == "UP":
             if len(self.ultimos_movs) == 3: self.ultimos_movs.pop(0)
             self.ultimos_movs.append("UP")    
@@ -300,10 +305,6 @@ class Fantasma(SpriteBase):
             if len(self.ultimos_movs) == 3: self.ultimos_movs.pop(0)
             self.ultimos_movs.append("RIGHT")
             self.direita()
-        
-        print("Fantasma:", self.x, self.y)
-        print("Ultimos movimentos:", self.ultimos_movs)
-
 
 
     def cima(self):

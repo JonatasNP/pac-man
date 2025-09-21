@@ -301,7 +301,6 @@ class Game:
                         break
 
 
-
 g = Game()
 g.mostrar_tela_start()
 
@@ -313,6 +312,6 @@ while True:
     g.mostrar_tela_game_over()
 
     if not g.esta_rodando: break
-    
+
     g = Game()
 
