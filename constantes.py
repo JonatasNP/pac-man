@@ -32,7 +32,9 @@ FONTE = "Courier"
 MUSICA_START = "intermission.wav"
 TECLA_START = "munch_1.wav"
 MUSICA_INICIO = "start.wav"
-MUSICA_GAME_OVER = "death_0.wav"
+SOM_FALECIMENTO1 = "death_0.wav"
+SOM_FALECIMENTO2 = "death_1.wav"
+MUSICA_GAME_OVER = "game_over.mp3"
 
 #PATHS
 SPRITESHEET_PATH='imagens/spritesheet.png'

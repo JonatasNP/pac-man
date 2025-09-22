@@ -33,8 +33,8 @@ class Game:
             velocidade=3
         )
         self.todas_as_sprites = pygame.sprite.Group()
-        self.todas_as_sprites.add(self.pacman)
 
+        self.todas_as_sprites.add(self.pacman)
         for pos_ini, cor_fantasma in [
             ((136,229), "vermelho"),
             ((280,229), "rosa"),
@@ -162,7 +162,7 @@ class Game:
 
         for sprite in self.todas_as_sprites:
             if isinstance(sprite, Fantasma):
-                if pygame.sprite.collide_rect(self.pacman, sprite):
+                if sprite.x - 23 <= self.pacman.x <= sprite.x + 23 and sprite.y - 23 <= self.pacman.y <= sprite.y + 23:
                     self.perder_ficha()
 
 
@@ -248,14 +248,41 @@ class Game:
                     pygame.mixer.Sound(os.path.join(self.diretorio_audios, constantes.TECLA_START)).play()
 
 
+    def reposicionar_sprites(self):
+        for sprite in self.todas_as_sprites:
+            if isinstance(sprite, Fantasma):
+                sprite.parar()
+                sprite.rect.topleft = (sprite.x_inicial, sprite.y_inicial)
+                sprite.x, sprite.y = sprite.x_inicial, sprite.y_inicial
+
+        self.pacman.rect.topleft = (10, 70)
+        self.pacman.x, self.pacman.y = 10, 70
+        self.pacman.frames = self.pacman.frame_parado
+        self.pacman.image = self.pacman.frames[0]
+            
+        self.atualizar_sprites()
+        self.desenhar_sprites()
+        pygame.time.delay(1500)
+
+
     def perder_ficha(self):
+        self.pacman.falecer()
+
+        pygame.mixer.Sound(os.path.join(self.diretorio_audios, constantes.SOM_FALECIMENTO1)).play()
+        tempo = pygame.time.get_ticks()
+        while pygame.time.get_ticks() - tempo < 1200:
+            self.relogio.tick(constantes.FPS)
+            self.pacman.image = self.pacman.frames[self.pacman.frame_atual]
+            self.pacman.update()
+            self.desenhar_sprites()
+        pygame.mixer.Sound(os.path.join(self.diretorio_audios, constantes.SOM_FALECIMENTO2)).play()
+
+        self.direcao_atual = None
+        self.direcao_desejada = None
+
         self.fichas -= 1
         if self.fichas >= 0:
-            #reposicionar
-            self.pacman.rect.topleft = (10, 70)
-            self.pacman.x, self.pacman.y = 10, 70
-            self.pacman.parar()
-
+            self.reposicionar_sprites()
         else:
             self.jogando = False
 

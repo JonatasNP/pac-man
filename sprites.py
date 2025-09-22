@@ -81,8 +81,9 @@ class Labirinto:
 
 
 class Pacman(SpriteBase):
-    def __init__(self, x=0, y=0, animacao_velocidade=3, velocidade=3):
+    def __init__(self, x=10, y=80, animacao_velocidade=3, velocidade=3):
         self.movendo = False
+        self.morrendo = False
         self.velocidade = velocidade
         self.x, self.y = x, y
         self.dx, self.dy = 0, 0
@@ -136,6 +137,7 @@ class Pacman(SpriteBase):
 
         #animacao
         if self.movendo:
+            self.morrendo = False
             self.contador_frame += 1
             if self.contador_frame >= self.animacao_velocidade:
                 self.contador_frame = 0
@@ -147,6 +149,13 @@ class Pacman(SpriteBase):
                     pygame.mixer.Sound('audios/munch_2.wav').play()
                 
                 self.image = self.frames[self.frame_atual]
+
+        elif self.morrendo:
+            self.contador_frame += 1
+            if self.contador_frame >= self.animacao_velocidade:
+                self.contador_frame = 0
+                self.frame_atual = (self.frame_atual + 1) % len(self.frames)
+
         else:
             self.image = self.frame_parado[0]
 
@@ -175,15 +184,25 @@ class Pacman(SpriteBase):
         self.frames = self.frame_parado
         self.dx, self.dy = 0, 0
         self.movendo = False
+    
+    def falecer(self):
+        self.frames = self.frames_falecendo
+        self.frame_atual = 0
+        self.movendo = False
+        self.morrendo = True
+        self.dx, self.dy = 0, 0
+        
+        
 
 
 class Fantasma(SpriteBase):
-    def __init__(self, cor, x=0, y=0, animacao_velocidade=2, velocidade=3, labirinto=None, pacman=None):
+    def __init__(self, cor, x=10, y=409, animacao_velocidade=2, velocidade=3, labirinto=None, pacman=None):
         super().__init__(pygame.Surface((constantes.TILE_SIZE, constantes.TILE_SIZE)))  
         self.movendo = False
         self.ultimos_movs = [None]
         self.cor = cor
         self.velocidade = velocidade
+        self.x_inicial, self.y_inicial = x, y
         self.x, self.y = x, y
         self.dx, self.dy = 0, 0
 
@@ -291,7 +310,7 @@ class Fantasma(SpriteBase):
         if direcoes_possiveis:
             opostas = {"LEFT":"RIGHT","RIGHT":"LEFT","UP":"DOWN","DOWN":"UP"}
 
-            if len(self.ultimos_movs) > 1 and len(direcoes_possiveis) > 1:
+            if len(self.ultimos_movs) > 1 and len(direcoes_possiveis) > 1 and opostas[self.ultimos_movs[-1]] in direcoes_possiveis:
                 direcoes_possiveis.remove(opostas[self.ultimos_movs[-1]])
             
             escolha = random.choice(direcoes_possiveis)
