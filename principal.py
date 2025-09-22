@@ -62,6 +62,12 @@ class Game:
         pygame.mixer.music.load(os.path.join("audios", constantes.MUSICA_INICIO))
         pygame.mixer.music.play()
 
+        self.relogio.tick(constantes.FPS)
+        self.eventos()
+        self.atualizar_sprites()
+        self.desenhar_sprites()
+        pygame.time.delay(5000)
+
         while self.jogando:    
             self.relogio.tick(constantes.FPS)
             self.eventos()
