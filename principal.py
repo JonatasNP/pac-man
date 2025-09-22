@@ -20,12 +20,13 @@ class Game:
         self.direcao_atual = None
         self.direcao_desejada = None
 
-        self.pontuacao = 0 # fazer depois
-        self.fichas = 1
+        self.fichas = 0 # fazer depois
+        self.vidas = 3
 
 
     def novo_jogo(self):
         self.labirinto = Labirinto()
+        self.labirinto.gerar_fichas()
         self.pacman = Pacman(
             x=10,
             y=70,
@@ -155,6 +156,8 @@ class Game:
             else:
                 self.pacman.parar()
                 self.direcao_atual = None
+
+        self.fichas += self.labirinto.pegou_ficha(self.pacman)
             
 
     def atualizar_sprites(self):
@@ -163,27 +166,27 @@ class Game:
         for sprite in self.todas_as_sprites:
             if isinstance(sprite, Fantasma):
                 if sprite.x - 23 <= self.pacman.x <= sprite.x + 23 and sprite.y - 23 <= self.pacman.y <= sprite.y + 23:
-                    self.perder_ficha()
-
+                    self.perder_vida()
+        
+        self.labirinto.gerar_fichas()
+                
 
     def desenhar_sprites(self):
         self.tela.fill(constantes.PRETO)
         self.labirinto.desenhar(self.tela)
         self.todas_as_sprites.draw(self.tela)
-        self.mostrar_texto(
-            f"PONTUAÇÃO ATUAL: {self.pontuacao}", 
-            18, 
-            constantes.AMARELO, 
-            constantes.LARGURA // 2,# posição x
-            20 # posição y
-        )
-        self.mostrar_texto(
-            f"fichas restantes: {self.fichas}", 
-            18, 
-            constantes.BRANCO, 
-            constantes.LARGURA // 2,# posição x
-            560 # posição y
-        )
+
+        fonte = pygame.font.SysFont("Segoe UI Emoji", 20)
+        txt_vidas = fonte.render(f"❤️ {self.vidas}", True, constantes.VERMELHO)
+        txt_fichas = fonte.render(f"✅ {self.fichas}", True, constantes.VERDE)
+        ficha_txt = fonte.render("✅", True, constantes.VERDE)
+
+        self.tela.blit(txt_vidas, (10, 20))
+        self.tela.blit(txt_fichas, (90, 17))
+
+        for x, y in self.labirinto.fichas:
+            self.tela.blit(ficha_txt, (x, y))
+
         pygame.display.flip()
 
 
@@ -265,7 +268,7 @@ class Game:
         pygame.time.delay(1500)
 
 
-    def perder_ficha(self):
+    def perder_vida(self):
         self.pacman.falecer()
 
         pygame.mixer.Sound(os.path.join(self.diretorio_audios, constantes.SOM_FALECIMENTO1)).play()
@@ -280,8 +283,8 @@ class Game:
         self.direcao_atual = None
         self.direcao_desejada = None
 
-        self.fichas -= 1
-        if self.fichas >= 0:
+        self.vidas -= 1
+        if self.vidas > 0:
             self.reposicionar_sprites()
         else:
             self.jogando = False
@@ -293,15 +296,15 @@ class Game:
         pygame.mixer.music.play()
 
         self.mostrar_texto(
-            'VOCÊ PERDEU TODAS AS FICHAS...',
-            22,
+            'VOCÊ PERDEU TODAS AS VIDAS...',
+            24,
             constantes.VERMELHO,
             constantes.LARGURA // 2,
             260,
         )
         self.mostrar_texto(
-            f"PONTUAÇÃO FINAL: {self.pontuacao}",
-            18,
+            f"FICHAS OBTIDAS: {self.fichas}",
+            20,
             constantes.AMARELO,
             constantes.LARGURA // 2,
             300

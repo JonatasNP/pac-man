@@ -20,6 +20,7 @@ PRETO = (0, 0, 0)
 BRANCO = (255, 255, 255)
 AMARELO = (244, 233, 51)
 VERMELHO = (255, 0, 0)
+VERDE = (0, 255, 0)
 
 # IMAGENS
 SPRITSHEET = "spritesheet.png"

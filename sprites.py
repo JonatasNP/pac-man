@@ -47,9 +47,39 @@ class Labirinto:
             409: [(70, 181), (373, 421), (469, 517)],
         }
 
-        self.bolinhas = []
-        #for linha in range(1, 4):
-        #    self.bolinhas.append((linha, 1))
+        self.fichas = []
+
+
+    def gerar_fichas(self):
+        while len(self.fichas) < 3:
+            pos = self.posicao_aleatoria()
+            if pos not in self.fichas:
+                self.fichas.append(pos)
+
+
+    def pegou_ficha(self, pacman):
+        for x, y in self.fichas:
+            if x - 23 <= pacman.x <= x + 23 and y - 23 <= pacman.y <= y + 23:
+                self.fichas.remove((x, y))
+                return 1
+        return 0
+
+
+    def posicao_aleatoria(self):
+        if random.choice([True, False]):
+            y = random.choice(list(self.horizontais.keys()))
+            intervalo = random.choice(self.horizontais[y])
+            x = random.randint(intervalo[0], intervalo[1])
+        else:
+            x = random.choice(list(self.verticais.keys()))
+            intervalo = random.choice(self.verticais[x])
+            y = random.randint(intervalo[0], intervalo[1])
+
+        return x, y
+
+
+    def desenhar(self, surface):
+        surface.blit(self.imagem, (0, 60))
 
 
     def pode_andar_horizontal(self, px, py):
@@ -67,17 +97,6 @@ class Labirinto:
         return None
 
 
-    def comer_bolinha(self, linha, coluna):
-        if (linha, coluna) in self.bolinhas:
-            self.bolinhas.remove((linha, coluna))
-
-    def desenhar(self, surface):
-        surface.blit(self.imagem, (0, 60))
-
-        for linha, coluna in self.bolinhas:
-            x = coluna * constantes.TILE_SIZE + constantes.TILE_SIZE // 2
-            y = linha * constantes.TILE_SIZE + constantes.TILE_SIZE // 2
-            pygame.draw.circle(surface, constantes.AMARELO, (x, y), 3)
 
 
 class Pacman(SpriteBase):
