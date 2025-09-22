@@ -114,6 +114,11 @@ class Pacman(SpriteBase):
         self.frames_baixo = [pygame.transform.scale(spritesheet.subsurface(rect), 
                                                     (constantes.TILE_SIZE, constantes.TILE_SIZE))
                             for rect in constantes.PACMAN_FRAMES["baixo"]]
+        
+
+        self.frames_falecendo = [pygame.transform.scale(spritesheet.subsurface(rect), 
+                                                    (constantes.TILE_SIZE, constantes.TILE_SIZE))
+                            for rect in constantes.PACMAN_FRAMES["falecendo"]]
 
 
         self.frames = self.frame_parado
@@ -217,7 +222,7 @@ class Fantasma(SpriteBase):
         pacman = self.pacman
         labirinto = self.labirinto
 
-        if False:
+        if pacman:
             self.movimentacao_inteligente(pacman, labirinto)
         else:
             self.movimentacao_aleatoria(labirinto)
@@ -236,6 +241,31 @@ class Fantasma(SpriteBase):
                 self.image = self.frames[self.frame_atual]
 
 
+    def movimentacao_inteligente(self, pacman, labirinto): # NÃO TÁ FUNCIONANDO AINDA!!!!!!!
+        px, py = self.rect.x, self.rect.y
+
+        intervalo_h = labirinto.pode_andar_horizontal(px, py)
+        intervalo_v = labirinto.pode_andar_vertical(px, py)
+
+        if intervalo_h and intervalo_h[0] <= pacman.x <= intervalo_h[1] and pacman.y == py:
+            inicio_x, fim_x = intervalo_h
+            if inicio_x <= pacman.x < px <= fim_x: #or (intervalo_v and intervalo_v[0] <= py <= intervalo_v[1] and inicio_x < px <= fim_x):
+                self.mudar_direcao("LEFT")
+            if inicio_x <= px < pacman.x <= fim_x: #or (intervalo_v and intervalo_v[0] <= py <= intervalo_v[1] and inicio_x <= px < fim_x):
+                self.mudar_direcao("RIGHT")
+
+        elif intervalo_v and intervalo_v[0] <= pacman.y <= intervalo_v[1] and pacman.x == px:
+            # inicio e fim tao trocados pq inicio é a posicao mais em cima na tela
+            inicio_y, fim_y = intervalo_v
+            if inicio_y <= pacman.y < py <= fim_y: #or (intervalo_h and intervalo_h[0] <= px <= intervalo_h[1] and inicio_y < py <= fim_y):
+                self.mudar_direcao("UP")
+            if inicio_y <= py < pacman.y <= fim_y: #or (intervalo_h and intervalo_h[0] <= px <= intervalo_h[1] and inicio_y <= py < fim_y):
+                self.mudar_direcao("DOWN")
+
+        else:
+            self.movimentacao_aleatoria(labirinto)
+
+    
     def movimentacao_aleatoria(self, labirinto):
         direcoes_possiveis = []
         px, py = self.rect.x, self.rect.y
@@ -245,17 +275,17 @@ class Fantasma(SpriteBase):
 
         if intervalo_h:
             inicio_x, fim_x = intervalo_h
-            if inicio_x < px == fim_x or (intervalo_v and (py in intervalo_v) and inicio_x < px <= fim_x):
+            if inicio_x < px == fim_x or (intervalo_v and intervalo_v[0] <= py <= intervalo_v[1] and inicio_x < px <= fim_x):
                 direcoes_possiveis.append("LEFT")
-            if inicio_x == px < fim_x or (intervalo_v and (py in intervalo_v) and inicio_x <= px < fim_x):
+            if inicio_x == px < fim_x or (intervalo_v and intervalo_v[0] <= py <= intervalo_v[1] and inicio_x <= px < fim_x):
                 direcoes_possiveis.append("RIGHT")
 
         if intervalo_v:
             # inicio e fim tao trocados pq inicio é a posicao mais em cima na tela
             inicio_y, fim_y = intervalo_v
-            if inicio_y < py == fim_y or (intervalo_h and (px in intervalo_h) and inicio_y < py <= fim_y):
+            if inicio_y < py == fim_y or (intervalo_h and intervalo_h[0] <= px <= intervalo_h[1] and inicio_y < py <= fim_y):
                 direcoes_possiveis.append("UP")
-            if inicio_y == py < fim_y or (intervalo_h and (px in intervalo_h) and inicio_y <= py < fim_y):
+            if inicio_y == py < fim_y or (intervalo_h and intervalo_h[0] <= px <= intervalo_h[1] and inicio_y <= py < fim_y):
                 direcoes_possiveis.append("DOWN")
 
         if direcoes_possiveis:
@@ -267,24 +297,6 @@ class Fantasma(SpriteBase):
             escolha = random.choice(direcoes_possiveis)
 
             self.mudar_direcao(escolha)
-        
-
-    def movimentacao_inteligente(self, pacman, labirinto): # NÃO TÁ FUNCIONANDO AINDA!!!!!!!
-        dx = pacman.rect.x - self.rect.x
-        dy = pacman.rect.y - self.rect.y
-        
-        if abs(dx) > abs(dy):
-            if dx > 0 and labirinto.pode_andar_horizontal(self.rect.x, self.rect.y):
-                self.direita()
-            elif dx < 0 and labirinto.pode_andar_horizontal(self.rect.x, self.rect.y):
-                self.esquerda()
-        elif abs(dx) < abs(dy):
-            if dy > 0 and labirinto.pode_andar_vertical(self.rect.x, self.rect.y):
-                self.baixo()
-            elif dy < 0 and labirinto.pode_andar_vertical(self.rect.x, self.rect.y):
-                self.cima()
-        else:
-            self.parar()
 
     
     def mudar_direcao(self, direcao):

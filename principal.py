@@ -21,7 +21,7 @@ class Game:
         self.direcao_desejada = None
 
         self.pontuacao = 0 # fazer depois
-        self.fichas = 0
+        self.fichas = 1
 
 
     def novo_jogo(self):
@@ -34,11 +34,12 @@ class Game:
         )
         self.todas_as_sprites = pygame.sprite.Group()
         self.todas_as_sprites.add(self.pacman)
+
         for pos_ini, cor_fantasma in [
-            ((409,517), "vermelho"),
-            ((409,517), "rosa"),
-            ((409,517), "azul"),
-            ((409,517), "amarelo"),
+            ((136,229), "vermelho"),
+            ((280,229), "rosa"),
+            ((136,328), "azul"),
+            ((280,328), "amarelo"),
         ]:
             fantasma = Fantasma(
                 cor=cor_fantasma,
@@ -50,6 +51,7 @@ class Game:
                 pacman=self.pacman
             )
             self.todas_as_sprites.add(fantasma)
+        
         pygame.mixer.Sound(os.path.join("audios", constantes.MUSICA_INICIO)).play()
         self.rodar()
     
@@ -58,6 +60,7 @@ class Game:
         self.jogando = True
         pygame.mixer.music.load(os.path.join("audios", constantes.MUSICA_INICIO))
         pygame.mixer.music.play()
+
         while self.jogando:    
             self.relogio.tick(constantes.FPS)
             self.eventos()
@@ -252,8 +255,7 @@ class Game:
             self.pacman.rect.topleft = (10, 70)
             self.pacman.x, self.pacman.y = 10, 70
             self.pacman.parar()
-            
-            pygame.time.delay(0)
+
         else:
             self.jogando = False
 
@@ -304,7 +306,7 @@ class Game:
 g = Game()
 g.mostrar_tela_start()
 
-while True:
+while g.esta_rodando:
     g.novo_jogo()
 
     if not g.esta_rodando: break
