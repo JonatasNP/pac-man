@@ -35,6 +35,7 @@ TECLA_START = "munch_1.wav"
 MUSICA_INICIO = "start.wav"
 SOM_FALECIMENTO1 = "death_0.wav"
 SOM_FALECIMENTO2 = "death_1.wav"
+SOM_PEGOU_FICHA = "pegou_ficha2.mp3"
 MUSICA_GAME_OVER = "game_over.mp3"
 
 #PATHS

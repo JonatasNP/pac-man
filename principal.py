@@ -1,8 +1,9 @@
 import pygame
 import constantes
-import sprites
 import os
-from sprites import Labirinto, Pacman, Fantasma
+from labirinto import Labirinto
+from pacman import Pacman
+from fantasma import Fantasma
 
 
 class Game:
@@ -66,7 +67,7 @@ class Game:
         self.eventos()
         self.atualizar_sprites()
         self.desenhar_sprites()
-        pygame.time.delay(5000)
+        pygame.time.delay(4500)
 
         while self.jogando:    
             self.relogio.tick(constantes.FPS)
