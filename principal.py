@@ -310,7 +310,7 @@ class Game:
             260,
         )
         self.mostrar_texto(
-            f"FICHAS OBTIDAS: {self.fichas}",
+            f"{self.fichas} FICHAS OBTIDAS",
             20,
             constantes.AMARELO,
             constantes.LARGURA // 2,
@@ -340,17 +340,17 @@ class Game:
                         break
 
 
-g = Game()
-g.mostrar_tela_start()
-
-while g.esta_rodando:
-    g.novo_jogo()
-
-    if not g.esta_rodando: break
-
-    g.mostrar_tela_game_over()
-
-    if not g.esta_rodando: break
-
+if __name__ == "__main__":
     g = Game()
+    g.mostrar_tela_start()
 
+    while g.esta_rodando:
+        g.novo_jogo()
+
+        if not g.esta_rodando: break
+
+        g.mostrar_tela_game_over()
+
+        if not g.esta_rodando: break
+
+        g = Game()
