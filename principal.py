@@ -39,9 +39,9 @@ class Game:
         self.todas_as_sprites.add(self.pacman)
         for pos_ini, cor_fantasma in [
             ((136,229), "vermelho"),
-            ((280,229), "rosa"),
-            ((136,328), "azul"),
-            ((280,328), "amarelo"),
+            ((280,229), "azul"),
+            ((136,328), "amarelo"),
+            ((280,328), "rosa"),
         ]:
             fantasma = Fantasma(
                 cor=cor_fantasma,
