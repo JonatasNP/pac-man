@@ -3,13 +3,14 @@ import time
 from spritebase import SpriteBase
 
 class Habilidade(SpriteBase):
-    def __init__(self, nome, cooldown, duracao=None):
+    def __init__(self, nome, cooldown, duracao=None, pacman=None):
         self.nome = nome
         self.image = constantes.SKILL_IMAGE[nome]
         self.cooldown = cooldown
         self.duracao = duracao
         self.ultimo_uso = 0
         self.ativa_ate = 0
+        self.pacman = pacman
 
 
     def pode_ativar(self):
@@ -25,6 +26,6 @@ class Habilidade(SpriteBase):
         return False
 
 
-    def esta_ativa(self):
+    def ta_ativa(self):
         return self.duracao is not None and time.time() < self.ativa_ate
 

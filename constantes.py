@@ -7,7 +7,7 @@ OFFSET_Y = 80
 
 # DIMENSÕES DA TELA
 LARGURA = 448
-ALTURA = 600
+ALTURA = 630
 
 # TÍTULO DO JOGO
 TITULO_JOGO = "PACMAN"
@@ -18,9 +18,11 @@ FPS = 30
 # CORES
 PRETO = (0, 0, 0)
 BRANCO = (255, 255, 255)
+CINZA = (127, 127, 127)
 AMARELO = (244, 233, 51)
 VERMELHO = (255, 0, 0)
 VERDE = (0, 255, 0)
+AZUL = (0, 0, 255)
 
 # IMAGENS
 SPRITSHEET = "spritesheet.png"
@@ -36,6 +38,7 @@ MUSICA_INICIO = "start.wav"
 SOM_FALECIMENTO1 = "death_0.wav"
 SOM_FALECIMENTO2 = "death_1.wav"
 SOM_PEGOU_FICHA = "pegou_ficha.mp3"
+SOM_CLIQUE = "click.mp3"
 MUSICA_GAME_OVER = "game_over.mp3"
 
 #PATHS

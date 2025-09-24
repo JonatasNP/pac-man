@@ -1,6 +1,7 @@
 import pygame
 import constantes
 import os
+from components.botao import Botao
 from labirinto import Labirinto
 from pacman import Pacman
 from fantasma import Fantasma
@@ -21,7 +22,7 @@ class Game:
         self.direcao_atual = None
         self.direcao_desejada = None
 
-        self.fichas = 0 # fazer depois
+        self.fichas = 0
         self.vidas = 3
 
 
@@ -223,40 +224,98 @@ class Game:
         pygame.mixer.music.load(os.path.join("audios", constantes.MUSICA_START))
         pygame.mixer.music.play()
 
-        self.mostrar_start_logo(constantes.LARGURA // 2, 20)
+        botao_jogar = Botao((constantes.LARGURA - 200) // 2, 300, 200, 40, "Jogar", constantes.AMARELO, constantes.PRETO)
+        botao_instrucoes = Botao((constantes.LARGURA - 200) // 2, 350, 200, 40, "Instruções", constantes.AZUL, constantes.PRETO)
+        botao_sair = Botao((constantes.LARGURA - 200) // 2, 400, 200, 40, "Sair", constantes.VERMELHO, constantes.PRETO)
 
-        self.mostrar_texto(
-            'Pressione uma tecla para jogar',
-            22,
-            constantes.AMARELO,
-            constantes.LARGURA // 2,
-            320
-        )
-        self.mostrar_texto(
-            'Desenvolvido por jonatas.cunha',
-            14,
-            constantes.BRANCO,
-            constantes.LARGURA // 2,
-            570
-        )
-
-        pygame.display.flip()
-        self.esperar_por_jogador()
-    
-
-    def esperar_por_jogador(self):
         esperando = True
-        while esperando:
+        while esperando and self.esta_rodando:
             self.relogio.tick(constantes.FPS)
+            self.tela.fill(constantes.PRETO)
+
+            self.mostrar_start_logo(constantes.LARGURA // 2, 20)
+            botao_jogar.desenhar(self.tela)
+            botao_instrucoes.desenhar(self.tela) 
+            botao_sair.desenhar(self.tela)
+            self.mostrar_texto(
+                'Desenvolvido por jonatas.cunha',
+                14,
+                constantes.BRANCO,
+                constantes.LARGURA // 2,
+                570
+            )
+            pygame.display.flip()
+
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    esperando = False
-                    self.esta_rodando = False
-                if event.type == pygame.KEYUP:
+                if botao_jogar.foi_clicado(event):
                     esperando = False
                     pygame.mixer.music.stop()
                     pygame.mixer.Sound(os.path.join(self.diretorio_audios, constantes.TECLA_START)).play()
+                if botao_instrucoes.foi_clicado(event):
+                    self.mostrar_tela_instrucoes()
+                if botao_sair.foi_clicado(event) or event.type == pygame.QUIT:
+                    esperando = False
+                    self.esta_rodando = False
 
+                if event.type == pygame.KEYUP:
+                    pass
+
+
+    def mostrar_tela_instrucoes(self):
+        botao_voltar = Botao((constantes.LARGURA - 200) // 2, constantes.ALTURA - 60, 200, 40, "Voltar", constantes.CINZA, constantes.PRETO)
+
+        spritesheet = pygame.image.load(constantes.SPRITESHEET_PATH).convert_alpha()
+        fonte = pygame.font.SysFont("Segoe UI Emoji", 18)
+
+        txt_instrucoes = [
+            fonte.render("👉 Mova-se no labirinto usando as setas ← ↑ ↓ →", True, constantes.BRANCO),
+            fonte.render("do seu teclado.", True, constantes.BRANCO),
+            fonte.render("", True, constantes.BRANCO),
+            fonte.render("✅ Sua missão é pegar as fichas que estarão em", True, constantes.BRANCO),
+            fonte.render("posições aleatórias no labirinto.", True, constantes.BRANCO),
+            fonte.render("", True, constantes.BRANCO),
+            fonte.render("👻 Fique longe dos fantasmas! Se você estiver em", True, constantes.BRANCO),
+            fonte.render("um mesmo corredor que eles, eles vão ver você e", True, constantes.BRANCO),
+            fonte.render("te perseguir!", True, constantes.BRANCO),
+            fonte.render("", True, constantes.BRANCO),
+            fonte.render("🧱 Se perceber que um fantasma viu você, tente", True, constantes.BRANCO),
+            fonte.render("despistá-lo usando as paredes do labirinto!", True, constantes.BRANCO),
+            fonte.render("", True, constantes.BRANCO),
+            fonte.render("⚠️ É bem arriscado pegar fichas que estão muito", True, constantes.BRANCO),
+            fonte.render("próximas de fantasmas. Evite fazer isso!", True, constantes.BRANCO),
+            fonte.render("", True, constantes.BRANCO),
+            fonte.render("☠️ Cuidado! Se suas vidas zerarem, você perde!", True, constantes.BRANCO),
+        ]
+
+        mostrando = True
+        while mostrando:
+            self.relogio.tick(constantes.FPS)
+            self.tela.fill(constantes.PRETO)
+
+            self.mostrar_texto(
+                'Instruções:',
+                22,
+                constantes.AMARELO,
+                constantes.LARGURA // 2,
+                20
+            )
+            for i in range(len(txt_instrucoes)):
+                self.tela.blit(txt_instrucoes[i], (20, 60 + i * 20))
+
+            boa_sorte = fonte.render("Boa gameplay!", True, constantes.AMARELO)
+            self.tela.blit(boa_sorte, (20, constantes.ALTURA - 100))
+            botao_voltar.desenhar(self.tela)
+
+            pygame.display.flip()
+
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    mostrando = False
+                    self.esta_rodando = False
+                if botao_voltar.foi_clicado(event):
+                    mostrando = False
+                    
 
     def reposicionar_sprites(self):
         for sprite in self.todas_as_sprites:
@@ -272,7 +331,7 @@ class Game:
             
         self.atualizar_sprites()
         self.desenhar_sprites()
-        pygame.time.delay(1500)
+        pygame.time.delay(2000)
 
 
     def perder_vida(self):
