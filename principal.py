@@ -1,5 +1,5 @@
 import pygame
-import constantes
+import constantes, settings
 import os
 from components.botao import Botao
 from labirinto import Labirinto
@@ -38,6 +38,7 @@ class Game:
         self.todas_as_sprites = pygame.sprite.Group()
 
         self.todas_as_sprites.add(self.pacman)
+        i = 0
         for pos_ini, cor_fantasma in [
             ((136,229), "vermelho"),
             ((280,229), "azul"),
@@ -54,6 +55,9 @@ class Game:
                 pacman=self.pacman
             )
             self.todas_as_sprites.add(fantasma)
+
+            i += 1
+            if i >= settings.QUANT_FANTASMAS: break
         
         pygame.mixer.Sound(os.path.join("audios", constantes.MUSICA_INICIO)).play()
         self.rodar()
@@ -281,8 +285,8 @@ class Game:
             fonte.render("🧱 Se perceber que um fantasma viu você, tente", True, constantes.BRANCO),
             fonte.render("despistá-lo usando as paredes do labirinto!", True, constantes.BRANCO),
             fonte.render("", True, constantes.BRANCO),
-            fonte.render("⚠️ É bem arriscado pegar fichas que estão muito", True, constantes.BRANCO),
-            fonte.render("próximas de fantasmas. Evite fazer isso!", True, constantes.BRANCO),
+            fonte.render("⚠️ Evite pegar fichas que estão muito próximas de", True, constantes.BRANCO),
+            fonte.render("fantasmas.", True, constantes.BRANCO),
             fonte.render("", True, constantes.BRANCO),
             fonte.render("☠️ Cuidado! Se suas vidas zerarem, você perde!", True, constantes.BRANCO),
         ]

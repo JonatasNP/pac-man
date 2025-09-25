@@ -6,6 +6,8 @@ from spritebase import SpriteBase
 
 class Pacman(SpriteBase):
     def __init__(self, x=10, y=80, animacao_velocidade=3, velocidade=3):
+        self.visivel = True #habilidade invisibilidade
+
         self.movendo = False
         self.morrendo = False
         self.velocidade = velocidade

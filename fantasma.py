@@ -50,7 +50,7 @@ class Fantasma(SpriteBase):
         pacman = self.pacman
         labirinto = self.labirinto
 
-        if pacman:
+        if pacman.visivel:
             self.movimentacao_inteligente(pacman, labirinto)
         else:
             self.movimentacao_aleatoria(labirinto)
