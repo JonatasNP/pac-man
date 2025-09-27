@@ -379,13 +379,9 @@ class Game:
             constantes.LARGURA // 2,
             300
         )
-        self.mostrar_texto(
-            'Se deseja iniciar um novo jogo, aperte a tecla N.',
-            14,
-            constantes.BRANCO,
-            constantes.LARGURA // 2,
-            570
-        )
+        
+        botao_jogar_novamente = Botao((constantes.LARGURA - 300) // 2, constantes.ALTURA - 60, 300, 40, "Jogar novamente", constantes.AMARELO, constantes.PRETO)
+        botao_jogar_novamente.desenhar(self.tela)
 
         pygame.display.flip()
 
@@ -396,11 +392,10 @@ class Game:
                 if event.type == pygame.QUIT:
                     esperando = False
                     self.esta_rodando = False
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_n:
-                        esperando = False
-                        self.jogando = False
-                        break
+                if botao_jogar_novamente.foi_clicado(event):
+                    esperando = False
+                    self.jogando = False
+                    break
 
 
 if __name__ == "__main__":

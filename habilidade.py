@@ -2,7 +2,7 @@ import constantes
 import time
 from spritebase import SpriteBase
 
-
+# IMPLEMENTAR DEPOISS
 class Habilidade(SpriteBase):
     def __init__(self, nome, cooldown, duracao=None):
         self.nome = nome
