@@ -306,8 +306,14 @@ class Game:
             for i in range(len(txt_instrucoes)):
                 self.tela.blit(txt_instrucoes[i], (20, 60 + i * 20))
 
-            boa_sorte = fonte.render("Boa gameplay!", True, constantes.AMARELO)
-            self.tela.blit(boa_sorte, (20, constantes.ALTURA - 100))
+            self.mostrar_texto(
+                'Boa gameplay!',
+                18,
+                constantes.AMARELO,
+                constantes.LARGURA // 2,
+                constantes.ALTURA - 100
+            )
+
             botao_voltar.desenhar(self.tela)
 
             pygame.display.flip()
