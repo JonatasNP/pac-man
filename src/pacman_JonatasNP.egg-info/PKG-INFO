@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: pacman_JonatasNP
-Version: 1.0.0
+Version: 1.0.1
 Summary: Um clone do PacMan com mudanças, feito em PyGame
 Author-email: Jônatas Cunha <jonatas.nicolau.pereira.da.cunha@ccc.ufcg.edu.br>
 License-Expression: MIT
@@ -81,7 +81,12 @@ Clone este repositório e execute o arquivo principal dele:
 
 ```bash
 git clone https://github.com/JonatasNP/pac-man.git
-python -m game
+```
+
+Estando no diretório do projeto, execute o programa como módulo:
+
+```bash
+python -m src
 ```
 
 ---

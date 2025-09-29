@@ -1,6 +1,6 @@
 [project]
 name = "pacman_JonatasNP"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
   { name="Jônatas Cunha", email="jonatas.nicolau.pereira.da.cunha@ccc.ufcg.edu.br" },
 ]
