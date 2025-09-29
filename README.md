@@ -66,7 +66,12 @@ Clone este repositório e execute o arquivo principal dele:
 
 ```bash
 git clone https://github.com/JonatasNP/pac-man.git
-python -m game
+```
+
+Estando no diretório do projeto, execute o programa como módulo:
+
+```bash
+python -m src
 ```
 
 ---

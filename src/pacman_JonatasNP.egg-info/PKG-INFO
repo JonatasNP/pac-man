@@ -64,7 +64,7 @@ O jogador controla o Pac-Man em um labirinto, coletando **fichas (✅)** e evita
 
 ## ⚙️ Requisitos
 
-* Ter uma versão moderna do Python instalada
+* Python 3.9 ou superior
 * Biblioteca [pygame](https://www.pygame.org/news)
 
 Para instalar o PyGame, rode no terminal:

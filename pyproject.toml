@@ -21,4 +21,4 @@ license-files = ["LICENSE"]
 Homepage = "https://github.com/JonatasNP/pac-man"
 
 [project.scripts]
-pacman-game = "game.principal:main"
+pacman = "principal:main"
