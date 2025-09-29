@@ -1,4 +1,4 @@
-# SETTINGS----
+# SETTINGS----para possiveis proximas versoes
 
 QUANT_FANTASMAS = 4
 

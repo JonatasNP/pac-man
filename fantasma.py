@@ -18,7 +18,7 @@ class Fantasma(SpriteBase):
         self.labirinto = labirinto
         self.pacman = pacman
 
-        # animacao
+
         self.frame_atual = 0
         self.contador_frame = 0
         self.animacao_velocidade = animacao_velocidade
@@ -60,7 +60,6 @@ class Fantasma(SpriteBase):
         self.x += self.dx
         self.y += self.dy
 
-        #mudar frames da animacao
         if self.movendo:
             self.contador_frame += 1
             if self.contador_frame >= self.animacao_velocidade:

@@ -6,7 +6,7 @@ from spritebase import SpriteBase
 
 class Pacman(SpriteBase):
     def __init__(self, x=10, y=80, animacao_velocidade=3, velocidade=3):
-        self.visivel = True #habilidade invisibilidade
+        self.visivel = True #para a possível habilidade "invisibilidade"
 
         self.movendo = False
         self.morrendo = False
@@ -14,14 +14,12 @@ class Pacman(SpriteBase):
         self.x, self.y = x, y
         self.dx, self.dy = 0, 0
 
-        # animação
         self.frame_atual = 0
         self.contador_frame = 0
         self.animacao_velocidade = animacao_velocidade
 
         spritesheet = pygame.image.load(constantes.SPRITESHEET_PATH).convert_alpha()
 
-        # carrega frames usando constantes
         self.frame_parado = [pygame.transform.scale(spritesheet.subsurface(rect), 
                                             (constantes.TILE_SIZE, constantes.TILE_SIZE))
                      for rect in constantes.PACMAN_FRAMES["parado"]]
@@ -54,14 +52,12 @@ class Pacman(SpriteBase):
 
 
     def update(self):
-        #movimento
         self.rect.x += self.dx
         self.x += self.dx
         
         self.rect.y += self.dy
         self.y += self.dy
 
-        #animacao
         if self.movendo:
             self.morrendo = False
             self.contador_frame += 1

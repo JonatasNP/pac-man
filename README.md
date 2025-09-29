@@ -1,0 +1,85 @@
+# 🟡 PacMan modificado
+
+Este é um projeto em **Python + PyGame** inspirado no clássico **Pac-Man**, mas com algumas modificações e melhorias.
+O jogador controla o Pac-Man em um labirinto, coletando **fichas (✅)** e evitando os **fantasmas (👻)**, que possuem uma inteligência simples para persegui-lo quando estão no mesmo corredor que o Pac-Man.
+
+---
+
+## 🎮 Funcionalidades
+
+* **Tela inicial** com botões de:
+  * Jogar
+  * Instruções
+  * Sair
+* **Sistema de fichas aleatórias**: fichas aparecem em posições randômicas no labirinto.
+* **Fantasmas inteligentes**: perseguem o Pac-Man quando o avistam no mesmo corredor.
+* **Contador de vidas (❤️)** e de **fichas coletadas (✅)**.
+* **Efeitos sonoros**.
+
+---
+
+## 🖼️ Screenshots
+
+### Tela Inicial
+![Tela Inicial](screenshots/screenshot_1.png)
+
+### Tela de Instruções
+![Tela de Instruções](screenshots/screenshot_2.png)
+
+### Exemplo de Gameplay 1
+![Exemplo de Gameplay 1](screenshots/screenshot_3.png)
+
+### Exemplo de Gameplay 2
+![Exemplo de Gameplay 2](screenshots/screenshot_4.png)
+
+### Tela de Game Over
+![Tela de Game Over](screenshots/screenshot_5.png)
+
+---
+
+## 🕹️ Como jogar
+
+* Use as **setas do teclado** (⬆️⬇️⬅️➡️) para mover o Pac-Man.
+* Colete as fichas **✅** espalhadas no labirinto.
+* Fuja dos fantasmas **👻** — se você ficar no mesmo corredor que eles, eles vão te perseguir!
+* Use as paredes para despistar os fantasmas.
+* Cuidado: se perder todas as **vidas ❤️**, o jogo termina.
+
+---
+
+## ⚙️ Requisitos
+
+* Ter uma versão moderna do Python instalada
+* Biblioteca [pygame](https://www.pygame.org/news)
+
+Para instalar o PyGame, rode no terminal:
+
+```bash
+pip install pygame
+```
+
+---
+
+## ▶️ Executando o jogo
+
+Clone este repositório e execute o arquivo principal dele:
+
+```bash
+git clone https://github.com/JonatasNP/pac-man.git
+python3 principal.py
+```
+
+---
+
+## 🚀 Ideias para as possíveis próximas versões
+
+* Sistema de **high score** com ranking.
+* Implementar **habilidades** para o Pac-Man (já prevista no código).
+* Adicionar **níveis progressivos** com aumento de dificuldade.
+* Melhorar a **IA dos fantasmas**, tornando-os mais desafiadores a critério do jogador.
+
+---
+
+## 👨‍💻 Autor
+
+Projeto desenvolvido por **Jônatas Nicolau Pereira da Cunha** para a disciplina de Programação 1 da Universidade Federal de Campina Grande (UFCG).
