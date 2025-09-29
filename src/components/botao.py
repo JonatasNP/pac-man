@@ -1,5 +1,5 @@
 import pygame
-import constantes
+import src.constantes as constantes
 import os
 
 

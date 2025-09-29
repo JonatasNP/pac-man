@@ -1,3 +1,18 @@
+Metadata-Version: 2.4
+Name: pacman_JonatasNP
+Version: 1.0.0
+Summary: Um clone do PacMan com mudanças, feito em PyGame
+Author-email: Jônatas Cunha <jonatas.nicolau.pereira.da.cunha@ccc.ufcg.edu.br>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/JonatasNP/pac-man
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pygame>=2.5.0
+Dynamic: license-file
+
 # 🟡 PacMan modificado
 
 Este é um projeto em **Python + PyGame** inspirado no clássico **Pac-Man**, mas com algumas modificações e melhorias.
@@ -49,7 +64,7 @@ O jogador controla o Pac-Man em um labirinto, coletando **fichas (✅)** e evita
 
 ## ⚙️ Requisitos
 
-* Python 3.9 ou superior
+* Ter uma versão moderna do Python instalada
 * Biblioteca [pygame](https://www.pygame.org/news)
 
 Para instalar o PyGame, rode no terminal:

@@ -1,0 +1,24 @@
+[project]
+name = "pacman_JonatasNP"
+version = "1.0.0"
+authors = [
+  { name="Jônatas Cunha", email="jonatas.nicolau.pereira.da.cunha@ccc.ufcg.edu.br" },
+]
+description = "Um clone do PacMan com mudanças, feito em PyGame"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "pygame>=2.5.0"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.urls]
+Homepage = "https://github.com/JonatasNP/pac-man"
+
+[project.scripts]
+pacman-game = "game.principal:main"

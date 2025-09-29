@@ -1,0 +1,11 @@
+__init__
+__main__
+components
+constantes
+fantasma
+habilidade
+labirinto
+pacman
+principal
+settings
+spritebase

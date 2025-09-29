@@ -1,4 +1,5 @@
-import os, pygame, random, constantes
+import os, pygame, random
+from . import constantes
 
 
 class Labirinto:

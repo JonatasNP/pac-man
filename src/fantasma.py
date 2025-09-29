@@ -1,7 +1,7 @@
 import pygame
-import constantes
 import random
-from spritebase import SpriteBase
+from .spritebase import SpriteBase
+from . import constantes
 
 
 class Fantasma(SpriteBase):

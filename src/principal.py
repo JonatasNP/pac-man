@@ -1,10 +1,11 @@
 import pygame
-import constantes, settings
 import os
+from . import constantes, settings
+
 from components.botao import Botao
-from labirinto import Labirinto
-from pacman import Pacman
-from fantasma import Fantasma
+from .labirinto import Labirinto
+from .pacman import Pacman
+from .fantasma import Fantasma
 
 
 class Game:
@@ -404,7 +405,7 @@ class Game:
                     break
 
 
-if __name__ == "__main__":
+def main():
     g = Game()
     g.mostrar_tela_start()
 
@@ -418,3 +419,7 @@ if __name__ == "__main__":
         if not g.esta_rodando: break
 
         g = Game()
+        
+
+if __name__ == "__main__":
+    main()

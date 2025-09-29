@@ -1,7 +1,6 @@
 import pygame
-import constantes
-from spritebase import SpriteBase
-
+from .spritebase import SpriteBase
+from . import constantes
 
 
 class Pacman(SpriteBase):
